@@ -1,9 +1,13 @@
 package com.godol.springbootawspractice.web;
 
+import com.godol.springbootawspractice.config.auth.SecurityConfig;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.core.Is.is;
@@ -11,12 +15,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = HelloController.class)
+@WebMvcTest(controllers = HelloController.class,
+excludeFilters = {
+        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE,classes = SecurityConfig.class)
+})
 class HelloControllerTest {
 
     @Autowired
     private MockMvc mvc;
 
+    @WithMockUser(roles = "USER")
     @DisplayName("헬로 리턴")
     @Test
     public void helloReturned() throws Exception{
@@ -25,8 +33,8 @@ class HelloControllerTest {
                 .andExpect(status().isOk());
 
     }
-
-    @DisplayName("Hello DTO Return")
+    @WithMockUser(roles = "USER")
+    @DisplayName("헬로 DTO 리턴")
     @Test
     public void helloDTOReturned() throws Exception{
         String name = "hello";
