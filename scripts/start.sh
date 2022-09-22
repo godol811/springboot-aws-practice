@@ -5,7 +5,8 @@ ABSDIR=$(dirname $ABSPATH)
 source ${ABSDIR}/profile.sh
 
 REPOSITORY=/home/ec2-user/app/step3
-PROJECT_NAME=freelec-springboot2-webservice
+PROJECT_NAME=springboot-aws-practice #해당 위치에 properties에 작성한 프로젝트명과 동일하게 작성합니다.
+
 
 echo "> Build 파일 복사"
 echo "> cp $REPOSITORY/zip/*.jar $REPOSITORY/"
@@ -13,7 +14,7 @@ echo "> cp $REPOSITORY/zip/*.jar $REPOSITORY/"
 cp $REPOSITORY/zip/*.jar $REPOSITORY/
 
 echo "> 새 어플리케이션 배포"
-JAR_NAME=$(ls -tr $REPOSITORY/*.jar | tail -n 1)
+JAR_NAME=$(ls -tr $REPOSITORY/*.jar | grep -v "plain" | tail -n 1)
 
 echo "> JAR Name: $JAR_NAME"
 
